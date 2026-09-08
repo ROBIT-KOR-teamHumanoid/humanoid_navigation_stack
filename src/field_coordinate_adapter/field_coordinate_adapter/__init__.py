@@ -1,0 +1,1 @@
+"""Field coordinate adapter package."""

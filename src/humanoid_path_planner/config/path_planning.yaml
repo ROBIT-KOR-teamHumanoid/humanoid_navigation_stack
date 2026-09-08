@@ -1,0 +1,47 @@
+path_planning:
+  ros__parameters:
+    frame_id: map                    # 경로와 마커에 사용할 기준 좌표계
+    replan_hz: 10.0                  # 경로 재계산 주기 (Hz)
+    zero_position_is_invalid: false  # 모든 입력의 (0, 0) 위치를 유효하지 않게 처리할지 여부
+
+    search:
+      critical_cost_multiplier: 10.0 # 위험 영역을 지나는 경로의 비용 배수
+      path_resolution: 0.10          # 출력 경로점 사이의 간격 (m)
+
+    field:
+      length: 10.0                    # 경기장 X축 전체 길이 (m)
+      width: 7.0                     # 경기장 Y축 전체 너비 (m)
+      line_width: 0.05               # RViz 외곽선 두께 (m)
+
+    obstacle:
+      robot_radius: 0.20              # 경로 계획에 사용할 로봇 반지름 (m)
+      opponent_radius_fallback: 0.075 # 상대 로봇 크기가 없을 때 사용할 반지름 (m)
+      margin: 0.10                    # 장애물 주변 기본 안전 여유 거리 (m)
+      near_distance: 0.0              # 로봇 근처 장애물로 판단하는 거리 (m)
+      near_extra_margin: 0.20         # 근처 장애물에 추가할 안전 여유 거리 (m)
+      merge_gap: 0.02                 # 가까운 장애물을 하나로 합칠 최대 간격 (m)
+      polygon_vertices: 12            # 원형 장애물을 근사할 다각형 꼭짓점 수
+
+    ball:
+      radius: 0.05                    # 공의 장애물 반지름 (m)
+      avoid: true                     # 시작 시 공을 장애물로 회피할지 여부
+
+    goal_obstacle:
+      enabled: true                   # 골대 구조물을 고정 장애물로 사용할지 여부
+      goal_width: 1.3                 # 골대 입구 너비 (m)
+      goal_depth: 0.6                 # 골대 깊이 (m)
+      wall_width: 0.05                # 골대 벽 두께 (m)
+      goal_line_offset: 0.30          # 골대를 골라인에서 경기장 바깥쪽으로 이동하는 거리 (m)
+      back_extension: 0.0             # 골대 뒤쪽 장애물 확장 거리 (m)
+
+    display:
+      show_visibility_graph: false    # RViz에 visibility graph를 표시할지 여부
+
+    topics:
+      robot: /adapter/pose_marker                 # 로봇 pose 입력 토픽
+      target: /adapter/target_marker              # 목표 pose 입력 토픽
+      obstacles: /adapter/obstacle_marker         # 장애물 MarkerArray 입력 토픽
+      ball: /adapter/ball_marker                  # 공 Marker 입력 토픽
+      ball_obstacle_active: ball_obstacle_active  # 공 회피 활성화 입력 토픽
+      path: /vg/path                              # 계산된 경로 출력 토픽
+      markers: /vg/markers                        # 디버그 마커 출력 토픽

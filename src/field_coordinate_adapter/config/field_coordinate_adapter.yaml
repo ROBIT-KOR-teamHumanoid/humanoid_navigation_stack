@@ -1,0 +1,25 @@
+field_coordinate_adapter:
+  ros__parameters:
+    hz: 30.0
+    output_frame_id: map
+    zero_pixel_is_invalid: true  # 원본 픽셀 (0, 0)을 유효하지 않게 처리할지 여부
+
+    field:
+      width_px: 1100.0
+      height_px: 800.0
+      width_m: 11.0
+      height_m: 8.0
+
+    yaw_offset_deg: 90.0
+
+    topics:
+      input:
+        localization: "/localization"
+        imu: "/Imu"
+        target: "/master2local"
+
+      output:
+        robot: /adapter/pose_marker
+        obstacles: /adapter/obstacle_marker
+        ball: /adapter/ball_marker
+        target: /adapter/target_marker
