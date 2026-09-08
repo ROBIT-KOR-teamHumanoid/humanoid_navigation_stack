@@ -6,21 +6,29 @@ path_planning:
 
     search:
       critical_cost_multiplier: 10.0 # 위험 영역을 지나는 경로의 비용 배수
-      path_resolution: 0.10          # 출력 경로점 사이의 간격 (m)
+      path_resolution: 0.22          # 출력 경로점 사이의 간격 (m)
 
+    # 실제 L 필드 치수. 예전 값 10.0 x 7.0 은 어댑터가 맵을 잘못된 배율로
+    # 읽어 planner 에게 10.08 x 7.00 으로 보이던 것에 맞춘 보정값이었다.
+    # 어댑터를 고쳤으므로 이제 진짜 미터다.
     field:
-      length: 10.0                    # 경기장 X축 전체 길이 (m)
-      width: 7.0                     # 경기장 Y축 전체 너비 (m)
-      line_width: 0.05               # RViz 외곽선 두께 (m)
+      length: 22.0                   # 경기장 X축 전체 길이 (m)
+      width: 14.0                    # 경기장 Y축 전체 너비 (m)
+      line_width: 0.12               # RViz 외곽선 두께 (m, 씬 라인 폭)
 
     obstacle:
-      robot_radius: 0.20              # 경로 계획에 사용할 로봇 반지름 (m)
-      opponent_radius_fallback: 0.075 # 상대 로봇 크기가 없을 때 사용할 반지름 (m)
-      margin: 0.10                    # 장애물 주변 기본 안전 여유 거리 (m)
+      robot_radius: 0.44              # 경로 계획에 사용할 로봇 반지름 (m, K1 실측 외접 0.444)
+      opponent_radius_fallback: 0.16  # 상대 로봇 크기가 없을 때 사용할 반지름 (m)
+      margin: 0.22                    # 장애물 주변 기본 안전 여유 거리 (m)
       near_distance: 0.0              # 로봇 근처 장애물로 판단하는 거리 (m)
-      near_extra_margin: 0.20         # 근처 장애물에 추가할 안전 여유 거리 (m)
-      merge_gap: 0.02                 # 가까운 장애물을 하나로 합칠 최대 간격 (m)
-      polygon_vertices: 12            # 원형 장애물을 근사할 다각형 꼭짓점 수
+      near_extra_margin: 0.44         # 근처 장애물에 추가할 안전 여유 거리 (m)
+      merge_gap: 0.04                 # 가까운 장애물을 하나로 합칠 최대 간격 (m)
+      # 원형 장애물을 근사할 다각형 꼭짓점 수. 폴리곤은 원에 외접하므로
+      # (obstacle._circumscribed_polygon) 수를 줄이면 장애물이 오히려 커진다 --
+      # 12각형은 반지름의 1.035배, 8각형은 1.082배로 덜 안전해지는 쪽이 아니다.
+      # 대신 간선 검사 수가 (12/8)^2 만큼 줄어, 녹화한 실제 프레임에서 계획
+      # 한 번이 190.8 ms 에서 92.9 ms 가 되고 경로는 419/419 그대로였다.
+      polygon_vertices: 8
 
     ball:
       radius: 0.05                    # 공의 장애물 반지름 (m)
@@ -28,10 +36,10 @@ path_planning:
 
     goal_obstacle:
       enabled: true                   # 골대 구조물을 고정 장애물로 사용할지 여부
-      goal_width: 1.3                 # 골대 입구 너비 (m)
-      goal_depth: 0.6                 # 골대 깊이 (m)
-      wall_width: 0.05                # 골대 벽 두께 (m)
-      goal_line_offset: 0.30          # 골대를 골라인에서 경기장 바깥쪽으로 이동하는 거리 (m)
+      goal_width: 3.0                 # 골대 입구 너비 (m, 씬 실측)
+      goal_depth: 1.0                 # 골대 깊이 (m, 씬 실측)
+      wall_width: 0.11                # 골대 벽 두께 (m)
+      goal_line_offset: 0.65          # 골대를 골라인에서 경기장 바깥쪽으로 이동하는 거리 (m)
       back_extension: 0.0             # 골대 뒤쪽 장애물 확장 거리 (m)
 
     display:

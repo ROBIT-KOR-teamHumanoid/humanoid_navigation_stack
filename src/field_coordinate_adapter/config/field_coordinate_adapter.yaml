@@ -5,10 +5,17 @@ field_coordinate_adapter:
     zero_pixel_is_invalid: true  # 원본 픽셀 (0, 0)을 유효하지 않게 처리할지 여부
 
     field:
+      # robocup_localization 의 맵 규격. field_coordinate.hpp 가 MAP_W/MAP_H 를
+      # WORLD_W/WORLD_H 로 나눠 쓰므로 여기 미터 값은 필드가 아니라 *월드*
+      # (필드 + 테두리 양쪽) 여야 한다. robot_config.h 가 FIELD_LARGE 라
+      # 22x14 필드 + 테두리 1.0 = 24x16 이다.
+      #
+      # 예전 값 11x8 은 S 필드(9x6 + 1.0)용이라, L 맵을 그 배율로 읽으면
+      # 좌표가 x 2.18배, y 2.00배 줄어든 채로 planner 에 들어갔다.
       width_px: 1100.0
       height_px: 800.0
-      width_m: 11.0
-      height_m: 8.0
+      width_m: 24.0
+      height_m: 16.0
 
     yaw_offset_deg: 90.0
 

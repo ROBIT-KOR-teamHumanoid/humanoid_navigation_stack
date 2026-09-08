@@ -13,7 +13,7 @@ from .obstacle import (
     Point,
     RoundObstacle,
 )
-from .visibility_graph import shortest_path
+from .visibility_graph import direct_path_is_clear, shortest_path
 from ..parameters import PlanningParameters
 
 
@@ -60,6 +60,17 @@ class Planner:
 
         if _distance(start, goal) <= 1.0e-9:
             return PlanResult((start, goal), geometry, ())
+
+        # 아무것도 사이에 없으면 탐색은 이 직선을 되돌려 줄 뿐이다. 경기에서는
+        # 이쪽이 압도적으로 흔하다 -- 녹화한 419 프레임 전부가 그랬고, 그중
+        # 84%는 목표가 10 cm 안에 있었다. 자세한 근거는 direct_path_is_clear.
+        if direct_path_is_clear(start, goal, geometry):
+            return PlanResult(
+                _densify((start, goal), self.parameters.path_resolution),
+                geometry,
+                # 그래프를 안 세웠으므로 디버그로 그릴 간선은 실제로 쓴 하나뿐.
+                ((start, goal),),
+            )
 
         visibility_path = shortest_path(
             start,

@@ -32,8 +32,8 @@ def load_parameters(node) -> AdapterParameters:
 
     node.declare_parameter('field.width_px', 1100.0)
     node.declare_parameter('field.height_px', 800.0)
-    node.declare_parameter('field.width_m', 11.0)
-    node.declare_parameter('field.height_m', 8.0)
+    node.declare_parameter('field.width_m', 24.0)
+    node.declare_parameter('field.height_m', 16.0)
     node.declare_parameter('yaw_offset_deg', 90.0)
 
     node.declare_parameter('topics.input.localization', '/localization')

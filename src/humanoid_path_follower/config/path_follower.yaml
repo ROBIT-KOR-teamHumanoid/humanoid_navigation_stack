@@ -17,12 +17,15 @@ path_follower:
       min_vel_theta: -1.00         # 최소 회전 속도 (rad/s, AI Sapiens 정책 범위)
       max_vel_theta: 1.00          # 최대 회전 속도 (rad/s, AI Sapiens 정책 범위)
 
-      translation_gain: 1.5        # 남은 경로 길이에 대한 이동 P gain
+      # 이 gain 은 남은 경로 길이(m)를 속도(m/s)로 바꾼다. 어댑터가
+      # 고쳐지기 전에는 그 길이가 2.18배 줄어든 값이었으므로, 같은 속도를
+      # 내려면 gain 도 그만큼 나눠야 한다 (1.5 / 2.18).
+      translation_gain: 0.69       # 남은 경로 길이에 대한 이동 P gain
       rotation_kp: 3.0             # 제자리 회전 응답을 높인 각도 오차 P gain
 
-      orient_to_goal_distance: 0.3 # 목표 yaw 정렬을 시작할 거리 (m)
+      orient_to_goal_distance: 0.65 # 목표 yaw 정렬을 시작할 거리 (m)
 
-      position_tolerance: 0.05     # 목표 위치 허용 오차 (m)
+      position_tolerance: 0.11     # 목표 위치 허용 오차 (m)
       orientation_tolerance: 0.087 # 목표 방향 허용 오차 (rad, 약 5도)
 
       smoothing_tau: 0.04          # 지수 평활화 시정수 (s)

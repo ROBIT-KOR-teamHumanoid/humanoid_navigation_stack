@@ -26,12 +26,12 @@ def test_load_parameters_uses_yaml_as_only_source():
         parameters = load_parameters(node)
         assert parameters.frame_id == 'map'
         assert parameters.zero_position_is_invalid is False
-        assert parameters.field.length == 9.0
-        assert parameters.field.width == 6.0
-        assert parameters.field.line_width == 0.05
-        assert parameters.goal_obstacle.field_length == 9.0
-        assert parameters.goal_obstacle.goal_width == 1.3
-        assert parameters.goal_obstacle.goal_line_offset == 0.30
+        assert parameters.field.length == 22.0
+        assert parameters.field.width == 14.0
+        assert parameters.field.line_width == 0.12
+        assert parameters.goal_obstacle.field_length == 22.0
+        assert parameters.goal_obstacle.goal_width == 3.0
+        assert parameters.goal_obstacle.goal_line_offset == 0.65
         assert parameters.goal_obstacle.back_extension == 0.0
         assert parameters.topics.robot == '/adapter/pose_marker'
     finally:

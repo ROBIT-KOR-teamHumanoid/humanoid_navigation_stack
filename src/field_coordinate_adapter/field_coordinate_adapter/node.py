@@ -189,8 +189,12 @@ class FieldCoordinateAdapterNode(Node):
             marker.pose.position.y = y
             marker.pose.position.z = 0.05
             marker.pose.orientation.w = 1.0
-            marker.scale.x = 0.15
-            marker.scale.y = 0.15
+            # planner 가 이 지름을 장애물 크기로 그대로 읽는다
+            # (path_planning_node._on_obstacles). 좌표가 실제 미터가 된 뒤로는
+            # K1 실측 폭(약 0.59 m)에 맞춘 값이어야 한다 -- 예전 0.15 는
+            # 2.18배 줄어든 프레임에서의 값이었다.
+            marker.scale.x = 0.33
+            marker.scale.y = 0.33
             marker.scale.z = 0.10
             marker.color.r = 0.5
             marker.color.g = 0.5
