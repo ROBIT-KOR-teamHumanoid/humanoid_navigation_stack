@@ -144,6 +144,12 @@ class PathFollowerNode(Node):
                     now.to_msg(),
                 )
             )
+            # self.get_logger().info(
+            #     f'cmd=({result.command.vx:.3f}, '
+            #     f'{result.command.vy:.3f}, '
+            #     f'{result.command.wz:.3f}) '
+            #     f'reached={result.goal_reached}'
+            # )
 
     def _inputs_ready(self, now_seconds: float) -> bool:
         """Return whether both inputs are present, compatible, and fresh."""

@@ -48,6 +48,26 @@ def test_front_path_commands_forward_motion():
     assert result.command.vx <= controller_parameters().max_vel_x
 
 
+def test_controller_advances_carrot_on_unchanged_path():
+    """Passing the first carrot must keep forward motion on the same path."""
+    controller = FollowTheCarrotController(controller_parameters())
+    path = [Pose2D(float(index), 0.0, 0.0) for index in range(5)]
+
+    for robot_x, expected_index in [(0.0, 1), (1.0, 2), (2.1, 3), (3.8, 4)]:
+        result = controller.step(Pose2D(robot_x, 0.0, 0.0), path, dt=0.05)
+
+        assert result.carrot is path[expected_index]
+        assert result.command.vx > 0.0
+        assert result.command.vy == pytest.approx(0.0)
+        assert result.command.wz == pytest.approx(0.0)
+        assert result.goal_reached is False
+
+    result = controller.step(path[-1], path, dt=0.05)
+    assert result.carrot is path[-1]
+    assert result.goal_reached is True
+    assert result.command == VelocityCommand()
+
+
 def test_side_path_commands_bounded_lateral_motion():
     """A lateral carrot must produce bounded local Y velocity."""
     result = command_for(Pose2D(0.0, 1.0, 0.0))

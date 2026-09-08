@@ -35,13 +35,24 @@ def remaining_path_length(
 def select_carrot(
     path: Sequence[Pose2D],
     carrot_index: int,
+    *,
+    robot: Pose2D,
 ) -> Pose2D | None:
-    """Select the requested waypoint or the last pose for a short path."""
+    """
+    Select ahead of the nearest waypoint, capped at the final goal.
+
+    ``carrot_index`` is a forward waypoint offset, with a minimum of one.
+    Equal-distance waypoints prefer the later index in path order.
+    """
     if carrot_index < 0:
         raise ValueError('carrot_index must be non-negative')
     if not path:
         return None
-    return path[min(carrot_index, len(path) - 1)]
+    nearest_index = min(
+        range(len(path)),
+        key=lambda index: (distance(robot, path[index]), -index),
+    )
+    return path[min(nearest_index + max(1, carrot_index), len(path) - 1)]
 
 
 def map_vector_to_local(

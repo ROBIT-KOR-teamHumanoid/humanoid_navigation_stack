@@ -8,9 +8,6 @@ path_planning:
       critical_cost_multiplier: 10.0 # 위험 영역을 지나는 경로의 비용 배수
       path_resolution: 0.22          # 출력 경로점 사이의 간격 (m)
 
-    # 실제 L 필드 치수. 예전 값 10.0 x 7.0 은 어댑터가 맵을 잘못된 배율로
-    # 읽어 planner 에게 10.08 x 7.00 으로 보이던 것에 맞춘 보정값이었다.
-    # 어댑터를 고쳤으므로 이제 진짜 미터다.
     field:
       length: 22.0                   # 경기장 X축 전체 길이 (m)
       width: 14.0                    # 경기장 Y축 전체 너비 (m)
@@ -23,12 +20,7 @@ path_planning:
       near_distance: 0.0              # 로봇 근처 장애물로 판단하는 거리 (m)
       near_extra_margin: 0.44         # 근처 장애물에 추가할 안전 여유 거리 (m)
       merge_gap: 0.04                 # 가까운 장애물을 하나로 합칠 최대 간격 (m)
-      # 원형 장애물을 근사할 다각형 꼭짓점 수. 폴리곤은 원에 외접하므로
-      # (obstacle._circumscribed_polygon) 수를 줄이면 장애물이 오히려 커진다 --
-      # 12각형은 반지름의 1.035배, 8각형은 1.082배로 덜 안전해지는 쪽이 아니다.
-      # 대신 간선 검사 수가 (12/8)^2 만큼 줄어, 녹화한 실제 프레임에서 계획
-      # 한 번이 190.8 ms 에서 92.9 ms 가 되고 경로는 419/419 그대로였다.
-      polygon_vertices: 8
+      polygon_vertices: 12
 
     ball:
       radius: 0.05                    # 공의 장애물 반지름 (m)

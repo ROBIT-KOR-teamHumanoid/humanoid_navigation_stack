@@ -40,7 +40,11 @@ class FollowTheCarrotController:
         dt: float | None = None,
     ) -> ControllerResult:
         """Calculate one follow-the-carrot control step."""
-        carrot = select_carrot(path, self.parameters.carrot_index)
+        carrot = select_carrot(
+            path,
+            self.parameters.carrot_index,
+            robot=robot,
+        )
         if carrot is None:
             self.reset()
             return ControllerResult(_ZERO_COMMAND, None, False)
@@ -93,8 +97,17 @@ class FollowTheCarrotController:
         )
 
         command = self._smooth(VelocityCommand(vx, vy, wz), dt)
+
+        # Prevent backward walking during navigation.
+        command = VelocityCommand(
+            vx=max(0.0, command.vx),
+            vy=command.vy,
+            wz=command.wz,
+        )
+
         if position_error <= self.parameters.position_tolerance:
             command = VelocityCommand(0.0, 0.0, command.wz)
+            
         self._last_command = command
         self._has_previous_command = True
         return ControllerResult(command, carrot, False)

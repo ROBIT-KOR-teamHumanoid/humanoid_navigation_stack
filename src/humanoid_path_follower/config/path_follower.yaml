@@ -9,7 +9,7 @@ path_follower:
       carrot: /debug/carrot
 
     controller:
-      carrot_index: 1              # 추종할 경로 waypoint 인덱스
+      carrot_index: 1              # 최근접 waypoint에서 전진할 인덱스 간격 (최소 1)
       min_vel_x: -0.20             # 최소 전후진 속도 (m/s)
       max_vel_x: 0.90              # 최대 전후진 속도 (m/s)
       min_vel_y: -0.35             # 최소 측면 속도 (m/s)
@@ -17,9 +17,6 @@ path_follower:
       min_vel_theta: -1.00         # 최소 회전 속도 (rad/s, AI Sapiens 정책 범위)
       max_vel_theta: 1.00          # 최대 회전 속도 (rad/s, AI Sapiens 정책 범위)
 
-      # 이 gain 은 남은 경로 길이(m)를 속도(m/s)로 바꾼다. 어댑터가
-      # 고쳐지기 전에는 그 길이가 2.18배 줄어든 값이었으므로, 같은 속도를
-      # 내려면 gain 도 그만큼 나눠야 한다 (1.5 / 2.18).
       translation_gain: 0.69       # 남은 경로 길이에 대한 이동 P gain
       rotation_kp: 3.0             # 제자리 회전 응답을 높인 각도 오차 P gain
 

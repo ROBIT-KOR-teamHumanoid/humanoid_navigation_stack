@@ -35,19 +35,6 @@ def direct_path_is_clear(
     geometry: ObstacleGeometry,
 ) -> bool:
     """Return whether the straight segment already is the shortest path."""
-    # 사이에 아무것도 없으면 탐색은 이 직선을 되돌려 줄 뿐인데, 그 탐색이
-    # 싸지 않다: 노드 쌍마다 모든 폴리곤 간선을 검사해서 실제 경기 스냅샷
-    # 기준 간선 624개에 호출당 190 ms 였다. 4로봇 경기에서 녹화한 419
-    # 프레임 전부가 이 경우였고, 같은 계획이 0.3 ms 로 줄었다.
-    #
-    # margin 뿐 아니라 critical 까지 보는 이유: 선분이 critical 을 막히지
-    # 않고 가로지를 수 있는데, _edge_multiplier 가 그 통과에
-    # critical_cost_multiplier 를 매기므로 탐색은 우회를 고를 수도 있다.
-    # 거기서 "직선" 이라고 답하면 빨라진 게 아니라 다른 플래너가 된다.
-    #
-    # 이 검사는 일을 건너뛰기만 한다. 하나라도 걸리면 전체 탐색으로
-    # 떨어지며, 끝점이 margin 폴리곤 안에 있어 shortest_path 가 직접 간선을
-    # 예외로 허용하는 경우도 그쪽으로 간다.
     for polygon in geometry.margin:
         if segment_blocked_by_polygon(start, goal, polygon):
             return False
